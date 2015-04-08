@@ -23,6 +23,10 @@
 @property (nonatomic) SKSpriteNode *coins;
 @property (nonatomic) SKSpriteNode *bee;
 @property (nonatomic) SKSpriteNode *ground;
+@property (nonatomic) SKSpriteNode *heartOne;
+@property (nonatomic) SKSpriteNode *heartTwo;
+@property (nonatomic) SKSpriteNode *heartThree;
+@property (nonatomic) SKSpriteNode *hearts;
 
 //Properties for Actions
 @property (nonatomic) SKAction *coinSound;
@@ -41,6 +45,7 @@
 @property (nonatomic) SKNode *coinNode;
 @property (nonatomic) SKNode *playerNode;
 @property (nonatomic) SKNode *pausePlayNode;
+@property (nonatomic) SKNode *heartsUINode;
 
 //Properties for Misc. Usage
 @property (nonatomic) CGFloat floorHeight;
@@ -61,16 +66,22 @@ static const uint32_t playerCategory = 0x1;
 static const uint32_t coinCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t beeCategory = 0x1 << 3;
+static const uint32_t heartCategory = 0x1 <<4;
 
 //Obstacle Spawning Times
 static const float obstacleDelay = 1.0f;
 static const float obstacleUpdateMinTime = 1.0f;
-static const float obstableUpdateMaxTime = 1.5f;
+static const float obstableUpdateMaxTime = 2.0f;
 
 //Coin Spawning Times
 static const float coinDelay = 0.5f;
 static const float coinUpdateMin = 1.5f;
 static const float coinUpdateMax = 2.5f;
+
+//Heart Spawning Times
+static const float heartDelay = 3.0f;
+static const float heartUpdateMin = 8.0f;
+static const float heartUpdateMax = 10.0f;
 
 //UI Constants
 static NSString *fontName = @"GrutchShaded";
@@ -101,19 +112,25 @@ static NSString *fontName = @"GrutchShaded";
     _coinNode = [SKNode node];
     _playerNode = [SKNode node];
     _pausePlayNode = [SKNode node];
+    _heartsUINode = [SKNode node];
     [self addChild:_sceneNode];
     [self addChild:_beeNode];
     [self addChild:_coinNode];
     [self addChild:_playerNode];
     [self addChild:_pausePlayNode];
+    [self addChild:_heartsUINode];
     
     //This calls all of my methods on creating nodes
     [self addBackground];
     [self addPlayerWalking];
     [self startSpawningBees];
     [self startSpawningCoins];
+    [self startSpawningHearts];
     [self setupScoreLabel];
-    [_pausePlayNode addChild:[self pauseButton]];
+    [self setupHeartOne];
+    [self setupHeartTwo];
+    [self setupHeartThree];
+   // [_pausePlayNode addChild:[self pauseButton]];
     
 }
 
@@ -133,7 +150,15 @@ static NSString *fontName = @"GrutchShaded";
         
     } else if ([touched.name isEqualToString:@"walking"] || [touched.name isEqualToString:@"background"] || [touched.name isEqualToString:@"ground"]){
         
-        [self playerJumpingAnimation];
+        if (_heartThree != nil){
+            
+            [self playerSuperJumpingAnimation];
+            
+        } else {
+            
+            [self playerJumpingAnimation];
+            
+        }
         
     } else if ([touched.name isEqualToString:@"play"]){
         
@@ -390,6 +415,31 @@ static NSString *fontName = @"GrutchShaded";
     
 }
 
+-(void)playerSuperJumpingAnimation{
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+        
+        [self setUserInteractionEnabled:NO];
+        [ _player removeActionForKey:@"walking"];
+        
+        SKAction *jumpHeight = [SKAction moveToY:225 duration:.15];
+        SKAction *returnToGround = [jumpHeight reversedAction];
+        SKAction *waitToJump = [SKAction waitForDuration:.5];
+        SKAction *enableTouches = [SKAction runBlock:^{
+            
+            self.userInteractionEnabled = YES;
+            [_player runAction:_walking withKey:@"walking"];
+            
+        }];
+        
+        SKAction *jumping = [SKAction sequence:@[jumpHeight, _jumpSound, returnToGround, waitToJump, enableTouches]];
+        
+        [_player runAction:jumping withKey:@"jumping"];
+        
+    }
+    
+}
+
 #pragma mark Obstacle Methods
 
 //This method is used to create the bees. Two random numbers are generated for the x and y axis, the x is to make sure they are spread out and spawn off of the screen. And the y axis is to give them some variation in height to the bees. Finally the bee category is mixed, collision is set and also set to colide only with the player. Finally an action is made to move the bees from right to left on the screen and that it is set to take 11 seconds. The anitmations are setup like the player animations, please see that comment for how it works.
@@ -460,6 +510,110 @@ static NSString *fontName = @"GrutchShaded";
     
 }
 
+#pragma mark Setup Hearts
+
+-(void)setupHeartOne{
+    
+    //Creates a node, and then sets it to the image heart
+    SKTextureAtlas *heartAtlas = [self textureAtlas:@"sprites"];
+    _heartOne = [SKSpriteNode spriteNodeWithTexture:[heartAtlas textureNamed:@"heart"]];
+    
+    //This Will add in the first heart to the scene
+    _heartOne.position = CGPointMake(25, self.size.height - 25);
+    _heartOne.scale = 0.2;
+    _heartOne.physicsBody.dynamic = NO;
+    _heartOne.name = @"heartOne";
+    
+    //This adds the node to the scene
+    [_heartsUINode addChild:_heartOne];
+    
+}
+
+-(void)setupHeartTwo{
+    
+    //Creates a node, and then sets it to the image heart
+    SKTextureAtlas *heartAtlas = [self textureAtlas:@"sprites"];
+    _heartTwo = [SKSpriteNode spriteNodeWithTexture:[heartAtlas textureNamed:@"heart"]];
+    
+    //This Will add in the first heart to the scene
+    _heartTwo.position = CGPointMake(50, self.size.height - 25);
+    _heartTwo.scale = 0.2;
+    _heartTwo.physicsBody.dynamic = NO;
+    _heartTwo.name = @"heartOne";
+    
+    //This adds the node to the scene
+    [_heartsUINode addChild:_heartTwo];
+    
+}
+
+-(void)setupHeartThree{
+    
+    //Creates a node, and then sets it to the image heart
+    SKTextureAtlas *heartAtlas = [self textureAtlas:@"sprites"];
+    _heartThree = [SKSpriteNode spriteNodeWithTexture:[heartAtlas textureNamed:@"heart"]];
+    
+    //This Will add in the first heart to the scene
+    _heartThree.position = CGPointMake(75, self.size.height - 25);
+    _heartThree.scale = 0.2;
+    _heartThree.physicsBody.dynamic = NO;
+    _heartThree.name = @"heartOne";
+    
+    //This adds the node to the scene
+    [_heartsUINode addChild:_heartThree];
+    
+}
+
+-(void)addHeart {
+    
+    SKTextureAtlas *atlas = [self textureAtlas:@"sprites"];
+    _hearts = [SKSpriteNode spriteNodeWithTexture:[atlas textureNamed:@"heart"]];
+    
+    //This will give the node a name so it can be used for touches.
+    _hearts.name = @"hearts";
+    
+    //This will scale the node/image to the size I feel is good for the game.
+    _hearts.scale = 0.15;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+        
+        float randomPhoneX = [self randomNumber:900 andValue:1200];
+        float randomPhoneY = [self randomNumber:100 andValue:190];
+        _hearts.position = CGPointMake(randomPhoneX, randomPhoneY);
+        
+        CGPoint location = CGPointMake(-self.frame.size.width + _hearts.size.width/2, 100);
+        
+        SKAction *moving = [SKAction moveTo:location duration:15];
+        [_hearts runAction:moving withKey:@"moveHeart"];
+        
+    }
+    
+    _hearts.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_hearts.frame.size];
+    _hearts.physicsBody.dynamic = NO;
+    
+    //This sets the Catergoy to the coinCategory, sets it so it can be collided with and finally sets it that it should only colide with the player.
+    _hearts.physicsBody.categoryBitMask = heartCategory;
+    _hearts.physicsBody.collisionBitMask = 0;
+    _hearts.physicsBody.contactTestBitMask = playerCategory;
+    
+    [_heartsUINode addChild:_hearts];
+    
+}
+
+-(void)startSpawningHearts{
+    
+    SKAction *heartDelayTime = [SKAction waitForDuration:heartDelay];
+    SKAction *spawnHeart = [SKAction performSelector:@selector(addHeart) onTarget:self];
+    SKAction *spawnHeartDelay = [SKAction waitForDuration:[self randomNumber:heartUpdateMin andValue:heartUpdateMax]];
+    
+    SKAction *heartSpawnSequence = [SKAction sequence:@[spawnHeart, spawnHeartDelay]];
+    SKAction *heartSpawnForever = [SKAction repeatActionForever:heartSpawnSequence];
+    SKAction *completeHeartSequence = [SKAction sequence:@[heartDelayTime, heartSpawnForever]];
+    
+    [self runAction:completeHeartSequence withKey:@"heartSpawn"];
+    
+}
+
+
 #pragma mark Setup Methods
 
 //This method is used to setup the music player to be able to play the background music for the game.
@@ -529,6 +683,7 @@ static NSString *fontName = @"GrutchShaded";
     
     [self removeActionForKey:@"coinSpawn"];
     [self removeActionForKey:@"beeSpawn"];
+    [self removeActionForKey:@"heartSpawn"];
     
 }
 
@@ -610,19 +765,35 @@ static NSString *fontName = @"GrutchShaded";
     //This sets the _playing to NO so when the update happens it stops actions and the ground from moving. It also pauses the nodes for the bees, coins and players so that it does appear that the game is over and the user can no longer interact with the player. Finally the music is changed to play a game over music and displays the game over label.
     if (getBody.categoryBitMask == beeCategory){
         
-        _playing = NO;
-        _coinNode.paused = YES;
-        _beeNode.paused = YES;
-        _playerNode.paused = YES;
-        [self runAction:_deathSound];
-        [_musicPlayer stop];
-        [_pausePlayNode removeAllChildren];
-        [self reportCoins];
+        if (_heartThree != nil){
+            
+            [contact.bodyB.node removeFromParent];
+            [_heartThree removeFromParent];
+            _heartThree = nil;
+            
+        }  else if (_heartThree == nil && _heartTwo != nil){
+            
+            [contact.bodyB.node removeFromParent];
+            [_heartTwo removeFromParent];
+            _heartTwo = nil;
+            
+        } else if (_heartThree == nil && _heartTwo == nil && _heartOne != nil){
         
-        GameOver *gameover = [GameOver  sceneWithSize:self.frame.size];
-        gameover.coinsCollected = _coinsCollected;
-        SKTransition *gameoverTransition = [SKTransition fadeWithDuration:1.5];
-        [self.view presentScene:gameover transition:gameoverTransition];
+            _playing = NO;
+            _coinNode.paused = YES;
+            _beeNode.paused = YES;
+            _playerNode.paused = YES;
+            [self runAction:_deathSound];
+            [_musicPlayer stop];
+            [_pausePlayNode removeAllChildren];
+            [self reportCoins];
+            
+            GameOver *gameover = [GameOver  sceneWithSize:self.frame.size];
+            gameover.coinsCollected = _coinsCollected;
+            SKTransition *gameoverTransition = [SKTransition fadeWithDuration:1.5];
+            [self.view presentScene:gameover transition:gameoverTransition];
+            
+        }
     
     }
     
@@ -634,6 +805,29 @@ static NSString *fontName = @"GrutchShaded";
         _coinsCollected ++;
         _score.text = [NSString stringWithFormat:@"Coins Collected: %lu", (unsigned long)_coinsCollected];
         [self reportAchievements];
+        
+    }
+    
+    if (getBody.categoryBitMask == heartCategory){
+        
+        if (_heartThree != nil){
+         
+             [contact.bodyB.node removeFromParent];
+            NSLog(@"Full Health");
+            
+        } else if (_heartThree == nil && _heartTwo != nil){
+            
+             [contact.bodyB.node removeFromParent];
+            [self setupHeartThree];
+            NSLog(@"Got Third Heart");
+            
+        } else if (_heartThree == nil && _heartTwo == nil && _heartOne != nil){
+            
+            [contact.bodyB.node removeFromParent];
+            [self setupHeartTwo];
+            NSLog(@"Got Second Heart");
+            
+        }
         
     }
     
