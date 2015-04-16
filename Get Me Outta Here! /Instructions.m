@@ -50,6 +50,7 @@ static const int margins = 20;
     background.name = @"titlescreen";
     background.position = CGPointMake(0, 0);
     background.anchorPoint = CGPointZero;
+    background.size = self.size;
     
     [self addChild:background];
     
