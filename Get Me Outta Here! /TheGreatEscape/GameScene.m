@@ -320,8 +320,8 @@ static NSString *fontName = @"GrutchShaded";
 
     //This sets the Catergoy to the coinCategory, sets it so it can be collided with and finally sets it that it should only colide with the player.
     _coins.physicsBody.categoryBitMask = coinCategory;
-    _coins.physicsBody.collisionBitMask = 0;
-    _coins.physicsBody.contactTestBitMask = playerCategory;
+    _coins.physicsBody.collisionBitMask = groundCategory;
+    _coins.physicsBody.contactTestBitMask = playerCategory | groundCategory;
     
     [_coinNode addChild:_coins];
     
@@ -354,7 +354,8 @@ static NSString *fontName = @"GrutchShaded";
     _player.physicsBody.dynamic = NO;
     _player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_player.frame.size];
     _player.physicsBody.categoryBitMask = playerCategory;
-    _player.physicsBody.contactTestBitMask = beeCategory | coinCategory | groundCategory;
+    _player.physicsBody.contactTestBitMask = groundCategory;
+    _player.physicsBody.collisionBitMask = groundCategory;
     _player.position = CGPointMake(self.size.width * 0.15, 100);
     _player.physicsBody.allowsRotation = NO;
     
@@ -467,8 +468,8 @@ static NSString *fontName = @"GrutchShaded";
 
     _bee.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_bee.frame.size];
     _bee.physicsBody.categoryBitMask = beeCategory;
-    _bee.physicsBody.collisionBitMask = 0;
-    _bee.physicsBody.contactTestBitMask = playerCategory;
+    _bee.physicsBody.collisionBitMask = groundCategory;
+    _bee.physicsBody.contactTestBitMask = playerCategory | groundCategory;
     _bee.physicsBody.dynamic = NO;
     
     NSMutableArray *animation = [NSMutableArray arrayWithCapacity:10];
@@ -592,8 +593,8 @@ static NSString *fontName = @"GrutchShaded";
     
     //This sets the Catergoy to the coinCategory, sets it so it can be collided with and finally sets it that it should only colide with the player.
     _hearts.physicsBody.categoryBitMask = heartCategory;
-    _hearts.physicsBody.collisionBitMask = 0;
-    _hearts.physicsBody.contactTestBitMask = playerCategory;
+    _hearts.physicsBody.collisionBitMask = groundCategory;
+    _hearts.physicsBody.contactTestBitMask = playerCategory | groundCategory;
     
     [_heartsUINode addChild:_hearts];
     
@@ -636,7 +637,7 @@ static NSString *fontName = @"GrutchShaded";
     _jumpSound = [SKAction playSoundFileNamed:@"jump.caf" waitForCompletion:NO];
     _coinSound = [SKAction playSoundFileNamed:@"coin.caf" waitForCompletion:NO];
     _walkingSound = [SKAction playSoundFileNamed:@"walking.caf" waitForCompletion:YES];
-    _deathSound = [SKAction playSoundFileNamed:@"death.caf" waitForCompletion:NO];
+    _deathSound = [SKAction playSoundFileNamed:@"death.caf" waitForCompletion:YES];
     
 }
 
@@ -767,14 +768,14 @@ static NSString *fontName = @"GrutchShaded";
         
         if (_heartThree != nil){
             
-            [contact.bodyB.node removeFromParent];
             [_heartThree removeFromParent];
+            [self runAction:_deathSound];
             _heartThree = nil;
             
         }  else if (_heartThree == nil && _heartTwo != nil){
             
-            [contact.bodyB.node removeFromParent];
             [_heartTwo removeFromParent];
+            [self runAction:_deathSound];
             _heartTwo = nil;
             
         } else if (_heartThree == nil && _heartTwo == nil && _heartOne != nil){
@@ -783,7 +784,6 @@ static NSString *fontName = @"GrutchShaded";
             _coinNode.paused = YES;
             _beeNode.paused = YES;
             _playerNode.paused = YES;
-            [self runAction:_deathSound];
             [_musicPlayer stop];
             [_pausePlayNode removeAllChildren];
             [self reportCoins];
@@ -813,19 +813,16 @@ static NSString *fontName = @"GrutchShaded";
         if (_heartThree != nil){
          
              [contact.bodyB.node removeFromParent];
-            NSLog(@"Full Health");
             
         } else if (_heartThree == nil && _heartTwo != nil){
             
-             [contact.bodyB.node removeFromParent];
+            [contact.bodyB.node removeFromParent];
             [self setupHeartThree];
-            NSLog(@"Got Third Heart");
             
         } else if (_heartThree == nil && _heartTwo == nil && _heartOne != nil){
             
             [contact.bodyB.node removeFromParent];
             [self setupHeartTwo];
-            NSLog(@"Got Second Heart");
             
         }
         

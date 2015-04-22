@@ -8,6 +8,7 @@
 
 #import "Credits.h"
 #import "GameScene.h"
+#import "TitleScreen.h"
 #define IS_WIDESCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height-(double)568)<DBL_ESPSILON)
 
 @implementation Credits
@@ -32,6 +33,7 @@ static const int margins = 20;
     [self addGameoverText];
     [self addCoinText];
     [self addTopTitle];
+    [self addMainMenu];
     
 }
 
@@ -45,8 +47,14 @@ static const int margins = 20;
     if ([touched.name isEqualToString:@"playgame"]){
         
         GameScene *playGame = [GameScene sceneWithSize:self.frame.size];
-        SKTransition *gameTransition = [SKTransition doorwayWithDuration:2.0];
+        SKTransition *gameTransition = [SKTransition fadeWithDuration:1.0];
         [self.view presentScene:playGame transition:gameTransition];
+        
+    } else if ([touched.name isEqualToString:@"mainmenu"]){
+        
+        TitleScreen *mainMenu = [TitleScreen sceneWithSize:self.frame.size];
+        SKTransition *gameTransition = [SKTransition fadeWithDuration:1.5];
+        [self.view presentScene:mainMenu transition:gameTransition];
         
     }
     
@@ -133,8 +141,8 @@ static const int margins = 20;
     SKLabelNode *soundsText = [[SKLabelNode alloc] initWithFontNamed:fontName];
     soundsText.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
     soundsText.fontSize = 16;
-    soundsText.position = CGPointMake(self.size.width / 2, self.size.height / 2 + 50);
-    soundsText.text = @"All Other Sounds From: OpenGameArt.org";
+    soundsText.position = CGPointMake(self.size.width / 2, self.size.height / 2 + 35);
+    soundsText.text = @"Snow Shoe Step: Corsica_S - OpenGameArt.org";
     soundsText.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     [self addChild:soundsText];
     
@@ -145,7 +153,7 @@ static const int margins = 20;
     SKLabelNode *gameoverText = [[SKLabelNode alloc] initWithFontNamed:fontName];
     gameoverText.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
     gameoverText.fontSize = 16;
-    gameoverText.position = CGPointMake(self.size.width / 2, self.size.height / 2 + 35);
+    gameoverText.position = CGPointMake(self.size.width / 2, self.size.height / 2 + 50);
     gameoverText.text = @"The End (Death Screen Mix): User Avgvsta on OpenGameArt.org";
     gameoverText.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     [self addChild:gameoverText];
@@ -168,12 +176,25 @@ static const int margins = 20;
     
     SKLabelNode *startGame = [[SKLabelNode alloc] initWithFontNamed:fontName];
     startGame.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
-    startGame.position = CGPointMake(self.size.width / 2, self.size.height / 2 - margins);
+    startGame.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 - margins);
     startGame.fontSize = 24;
-    startGame.text = @"PLAY AGAIN";
+    startGame.text = @"PLAY GAME";
     startGame.name = @"playgame";
     startGame.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
     [self addChild:startGame];
+    
+}
+
+-(void)addMainMenu{
+    
+    SKLabelNode *mainMenu = [[SKLabelNode alloc] initWithFontNamed:fontName];
+    mainMenu.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
+    mainMenu.position = CGPointMake(self.size.width * 0.25, self.size.height / 2 - margins);
+    mainMenu.fontSize = 24;
+    mainMenu.text = @"MAIN MENU";
+    mainMenu.name = @"mainmenu";
+    mainMenu.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    [self addChild:mainMenu];
     
 }
 

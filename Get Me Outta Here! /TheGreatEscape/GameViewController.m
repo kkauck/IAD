@@ -39,8 +39,8 @@
     SKView * skView = (SKView *)self.view;
     if (!skView.scene){
         
-        skView.showsFPS = YES;
-        skView.showsNodeCount = YES;
+        //skView.showsFPS = YES;
+        //skView.showsNodeCount = YES;
         skView.ignoresSiblingOrder = YES;
         
         SKScene *titleScreen = [TitleScreen sceneWithSize:skView.bounds.size];

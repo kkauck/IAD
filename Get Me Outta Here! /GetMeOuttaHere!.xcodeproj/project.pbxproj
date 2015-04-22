@@ -37,10 +37,12 @@
 		2778BF8C1ABAFC9A00983075 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778BF791ABAFC9A00983075 /* iTunesArtwork@2x.png */; };
 		2778BF8D1ABAFC9A00983075 /* WhiteWolf.png in Resources */ = {isa = PBXBuildFile; fileRef = 2778BF7A1ABAFC9A00983075 /* WhiteWolf.png */; };
 		2778BF931ABAFFB100983075 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2778BF921ABAFFB100983075 /* LaunchScreen.xib */; };
+		2781411D1AE444B90080F371 /* LeaderboardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2781411C1AE444B90080F371 /* LeaderboardInfo.m */; };
+		2783BB171AE2F00D00F7919F /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2783BB161AE2F00D00F7919F /* death.caf */; };
 		279D6CAB1AC5D1A800678CE2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279D6CAA1AC5D1A800678CE2 /* GameKit.framework */; };
+		27B40DD11AE537DB0069DD27 /* LocalLB.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B40DD01AE537DB0069DD27 /* LocalLB.m */; };
 		27C1FEF51AB104EF00235736 /* gameover.caf in Resources */ = {isa = PBXBuildFile; fileRef = 27C1FEF41AB104EF00235736 /* gameover.caf */; };
 		27C304231AAE061700D44A6A /* coin.caf in Resources */ = {isa = PBXBuildFile; fileRef = 27C3041E1AAE061700D44A6A /* coin.caf */; };
-		27C304241AAE061700D44A6A /* death.caf in Resources */ = {isa = PBXBuildFile; fileRef = 27C3041F1AAE061700D44A6A /* death.caf */; };
 		27C304251AAE061700D44A6A /* jump.caf in Resources */ = {isa = PBXBuildFile; fileRef = 27C304201AAE061700D44A6A /* jump.caf */; };
 		27C304261AAE061700D44A6A /* walking.caf in Resources */ = {isa = PBXBuildFile; fileRef = 27C304211AAE061700D44A6A /* walking.caf */; };
 		27E698961AC7148000A9FF30 /* GrutchShaded.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27E698951AC7148000A9FF30 /* GrutchShaded.ttf */; };
@@ -101,10 +103,14 @@
 		2778BF791ABAFC9A00983075 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 		2778BF7A1ABAFC9A00983075 /* WhiteWolf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WhiteWolf.png; sourceTree = "<group>"; };
 		2778BF921ABAFFB100983075 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreen.xib; path = ../LaunchScreen.xib; sourceTree = "<group>"; };
+		2781411B1AE444B90080F371 /* LeaderboardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardInfo.h; sourceTree = "<group>"; };
+		2781411C1AE444B90080F371 /* LeaderboardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardInfo.m; sourceTree = "<group>"; };
+		2783BB161AE2F00D00F7919F /* death.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = death.caf; sourceTree = "<group>"; };
 		279D6CAA1AC5D1A800678CE2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		27B40DCF1AE537DB0069DD27 /* LocalLB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLB.h; sourceTree = "<group>"; };
+		27B40DD01AE537DB0069DD27 /* LocalLB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLB.m; sourceTree = "<group>"; };
 		27C1FEF41AB104EF00235736 /* gameover.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gameover.caf; sourceTree = "<group>"; };
 		27C3041E1AAE061700D44A6A /* coin.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = coin.caf; sourceTree = "<group>"; };
-		27C3041F1AAE061700D44A6A /* death.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = death.caf; sourceTree = "<group>"; };
 		27C304201AAE061700D44A6A /* jump.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = jump.caf; sourceTree = "<group>"; };
 		27C304211AAE061700D44A6A /* walking.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = walking.caf; sourceTree = "<group>"; };
 		27E698951AC7148000A9FF30 /* GrutchShaded.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = GrutchShaded.ttf; path = ../GrutchShaded.ttf; sourceTree = "<group>"; };
@@ -195,10 +201,10 @@
 		27E6989A1AC732A300A9FF30 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				2783BB161AE2F00D00F7919F /* death.caf */,
 				27C1FEF41AB104EF00235736 /* gameover.caf */,
 				2778AB5C1AAE07FC00FC94F8 /* music.caf */,
 				27C3041E1AAE061700D44A6A /* coin.caf */,
-				27C3041F1AAE061700D44A6A /* death.caf */,
 				27C304201AAE061700D44A6A /* jump.caf */,
 				27C304211AAE061700D44A6A /* walking.caf */,
 			);
@@ -216,6 +222,10 @@
 				2767B8541AC0A0CD003E959D /* Instructions.m */,
 				2767B84E1AC07BBA003E959D /* TitleScreen.h */,
 				2767B84F1AC07BBA003E959D /* TitleScreen.m */,
+				2781411B1AE444B90080F371 /* LeaderboardInfo.h */,
+				2781411C1AE444B90080F371 /* LeaderboardInfo.m */,
+				27B40DCF1AE537DB0069DD27 /* LocalLB.h */,
+				27B40DD01AE537DB0069DD27 /* LocalLB.m */,
 			);
 			name = "Extra Scenes";
 			sourceTree = "<group>";
@@ -384,7 +394,6 @@
 				2778BF821ABAFC9A00983075 /* Icon-Small-40.png in Resources */,
 				2778BF831ABAFC9A00983075 /* Icon-Small-40@2x.png in Resources */,
 				27C304261AAE061700D44A6A /* walking.caf in Resources */,
-				27C304241AAE061700D44A6A /* death.caf in Resources */,
 				2778BF7C1ABAFC9A00983075 /* Icon-60@2x.png in Resources */,
 				2778BF7B1ABAFC9A00983075 /* Icon-60.png in Resources */,
 				2778BF7D1ABAFC9A00983075 /* Icon-60@3x.png in Resources */,
@@ -408,6 +417,7 @@
 				2778BF7E1ABAFC9A00983075 /* Icon-72.png in Resources */,
 				27C1FEF51AB104EF00235736 /* gameover.caf in Resources */,
 				276B43E01AB70FF7004AFD61 /* sprites-iPad.atlas in Resources */,
+				2783BB171AE2F00D00F7919F /* death.caf in Resources */,
 				2778BF881ABAFC9A00983075 /* Icon-Small@2x.png in Resources */,
 				27C304251AAE061700D44A6A /* jump.caf in Resources */,
 			);
@@ -432,8 +442,10 @@
 				2767B85B1AC0B34E003E959D /* Credits.m in Sources */,
 				2767B8551AC0A0CD003E959D /* Instructions.m in Sources */,
 				2767B8581AC0A505003E959D /* GameOver.m in Sources */,
+				2781411D1AE444B90080F371 /* LeaderboardInfo.m in Sources */,
 				27F5F3551AA61E2C00E3A8E2 /* GameScene.m in Sources */,
 				272FAB561AC5F9AF00F41A93 /* GameKitHelper.m in Sources */,
+				27B40DD11AE537DB0069DD27 /* LocalLB.m in Sources */,
 				27F5F34F1AA61E2C00E3A8E2 /* main.m in Sources */,
 				2767B8501AC07BBA003E959D /* TitleScreen.m in Sources */,
 				27E698991AC71C1600A9FF30 /* AchievementHelpr.m in Sources */,
@@ -557,7 +569,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "GetMeOuttaHere!";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -571,7 +583,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "GetMeOuttaHere!";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

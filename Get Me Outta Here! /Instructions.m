@@ -8,6 +8,7 @@
 
 #import "Instructions.h"
 #import "GameScene.h"
+@import AVFoundation;
 #define IS_WIDESCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height-(double)568)<DBL_ESPSILON)
 
 @implementation Instructions
@@ -36,7 +37,7 @@ static const int margins = 20;
     /* Called when a touch begins */
     
     GameScene *playGame = [GameScene sceneWithSize:self.frame.size];
-    SKTransition *gameTransition = [SKTransition fadeWithDuration:2.0];//[SKTransition fadeWithDuration:1.5];
+    SKTransition *gameTransition = [SKTransition fadeWithDuration:1.0];
     [self.view presentScene:playGame transition:gameTransition];
     
 }

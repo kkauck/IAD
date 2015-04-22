@@ -11,6 +11,7 @@
 #import "Instructions.h"
 #import "Credits.h"
 #import "GameKitHelper.h"
+#import "LocalLB.h"
 @import iAd;
 #define IS_WIDESCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height-(double)568)<DBL_ESPSILON)
 
@@ -44,6 +45,7 @@ static const int margins = 20;
     [self addTopTitle];
     [self addCredits];
     [self addGameCenter];
+    [self addLocal];
     
     
 }
@@ -58,7 +60,7 @@ static const int margins = 20;
     if ([touched.name isEqualToString:@"playgame"]){
         
         GameScene *playGame = [GameScene sceneWithSize:self.frame.size];
-        SKTransition *gameTransition = [SKTransition fadeWithDuration:2.0];
+        SKTransition *gameTransition = [SKTransition fadeWithDuration:1.0];
         [self.view presentScene:playGame transition:gameTransition];
         _ads.delegate = nil;
         [_ads removeFromSuperview];
@@ -72,7 +74,7 @@ static const int margins = 20;
         [_ads removeFromSuperview];
         
     } else if ([touched.name isEqualToString:@"credits"]){
-        
+    
         Credits *credits = [Credits sceneWithSize:self.frame.size];
         SKTransition *creditsTransition = [SKTransition fadeWithDuration:1.5];
         [self.view presentScene:credits transition:creditsTransition];
@@ -85,6 +87,14 @@ static const int margins = 20;
         
         [[GameKitHelper sharedHelper] showGameCenter:viewController];
         
+        _ads.delegate = nil;
+        [_ads removeFromSuperview];
+        
+    } else if ([touched.name isEqualToString:@"leader"]){
+        
+        LocalLB *lb = [LocalLB sceneWithSize:self.frame.size];
+        SKTransition *lbTransition = [SKTransition fadeWithDuration:1.5];
+        [self.view presentScene:lb transition:lbTransition];
         _ads.delegate = nil;
         [_ads removeFromSuperview];
         
@@ -107,6 +117,19 @@ static const int margins = 20;
     
 }
 
+-(void)addLocal{
+    
+    SKLabelNode *local = [[SKLabelNode alloc] initWithFontNamed:fontName];
+    local.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
+    local.position = CGPointMake(self.size.width / 2, self.size.height / 2 - margins);
+    local.fontSize = 24;
+    local.text = @"LOCAL LEADERBOARD";
+    local.name = @"leader";
+    local.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    [self addChild:local];
+    
+}
+
 -(void)addTopTitle{
     
     SKLabelNode *topTitle = [[SKLabelNode alloc] initWithFontNamed:fontName];
@@ -124,7 +147,7 @@ static const int margins = 20;
     
     SKLabelNode *play = [[SKLabelNode alloc] initWithFontNamed:fontName];
     play.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
-    play.position = CGPointMake(self.size.width * 0.25, self.size.height / 2 + margins);
+    play.position = CGPointMake(self.size.width * 0.25, self.size.height / 2 + margins + 40);
     play.fontSize = 24;
     play.text = @"PLAY GAME";
     play.name = @"playgame";
@@ -137,7 +160,7 @@ static const int margins = 20;
     
     SKLabelNode *instructions = [[SKLabelNode alloc] initWithFontNamed:fontName];
     instructions.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
-    instructions.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 + margins);
+    instructions.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 + margins + 40);
     instructions.fontSize = 24;
     instructions.text = @"INSTRUCTIONS";
     instructions.name = @"instructions";
@@ -150,7 +173,7 @@ static const int margins = 20;
     
     SKLabelNode *credits = [[SKLabelNode alloc] initWithFontNamed:fontName];
     credits.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
-    credits.position = CGPointMake(self.size.width * 0.25, self.size.height / 2 - margins);
+    credits.position = CGPointMake(self.size.width * 0.25, self.size.height / 2 - margins + 40);
     credits.fontSize = 24;
     credits.text = @"CREDITS";
     credits.name = @"credits";
@@ -163,7 +186,7 @@ static const int margins = 20;
     
     SKLabelNode *gamecenter = [[SKLabelNode alloc] initWithFontNamed:fontName];
     gamecenter.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
-    gamecenter.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 - margins);
+    gamecenter.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 - margins + 40);
     gamecenter.fontSize = 24;
     gamecenter.text = @"GAME CENTER";
     gamecenter.name = @"gamecenter";
@@ -231,6 +254,10 @@ static const int margins = 20;
     
     _ads.delegate = nil;
     [_ads removeFromSuperview];
+    
+}
+
+- (IBAction)exitView:(UIStoryboardSegue *)closeView{
     
 }
 

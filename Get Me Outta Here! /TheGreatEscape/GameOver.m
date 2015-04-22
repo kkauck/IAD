@@ -11,16 +11,18 @@
 #import "Instructions.h"
 #import "TitleScreen.h"
 #import "Credits.h"
+#import "LeaderboardInfo.h"
 @import iAd;
 #define IS_WIDESCREEN (fabs((double)[[UIScreen mainScreen]bounds].size.height-(double)568)<DBL_ESPSILON)
 @import AVFoundation;
 
-@interface GameOver () <ADBannerViewDelegate>
+@interface GameOver () <ADBannerViewDelegate, UIAlertViewDelegate>
 
 //Setting Up Needed Properties for Game Over Scene
 @property (nonatomic) AVAudioPlayer *musicPlayer;
 @property (nonatomic, strong) ADBannerView *ads;
 @property (nonatomic) BOOL adVisible;
+@property (nonatomic) NSMutableArray *savedLeaderboard;
 
 @end
 
@@ -33,6 +35,17 @@ static const int margins = 20;
 #pragma mark Screen Setup
 -(void)didMoveToView:(SKView *)view {
     /* Setup your scene here */
+
+    //NSUserDefaults *savedData = [[NSUserDefaults standardUserDefaults] objectForKey:@"leaderboard"];
+    //_savedLeaderboard =  [[[NSUserDefaults standardUserDefaults] objectForKey:@"leaderboard"] mutableCopy];
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"leaderboard"];
+    _savedLeaderboard = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    if (_savedLeaderboard == nil){
+        
+        _savedLeaderboard = [[NSMutableArray alloc] init];
+        
+    }
     
     self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
     self.physicsBody.dynamic = NO;
@@ -57,6 +70,10 @@ static const int margins = 20;
         [[NSUserDefaults standardUserDefaults] synchronize];
         
     }
+    
+    UIAlertView *nameAlert = [[UIAlertView alloc] initWithTitle:@"Local Leaderboards" message:@"Enter Your Name For Leaderboard" delegate:self cancelButtonTitle:@"Add" otherButtonTitles: nil];
+    nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [nameAlert show];
     
 }
 
@@ -178,7 +195,15 @@ static const int margins = 20;
     SKLabelNode *highScore = [[SKLabelNode alloc] initWithFontNamed:fontName];
     highScore.fontColor = [UIColor colorWithRed:0.114 green:0.443 blue:0.667 alpha:1];
     highScore.position = CGPointMake(self.size.width * 0.75, self.size.height / 2 - margins);
-    highScore.text = [NSString stringWithFormat:@"High Score: %lu Coins!", (unsigned long)[self highScore]];
+    if (coinsCollected > [self highScore]){
+        
+            highScore.text = [NSString stringWithFormat:@"High Score: %lu Coins!", (unsigned long)coinsCollected];
+        
+    } else if (coinsCollected < [self highScore]){
+        
+            highScore.text = [NSString stringWithFormat:@"High Score: %lu Coins!", (unsigned long)[self highScore]];
+        
+    }
     highScore.name = @"highscore";
     highScore.fontSize = 20;
     highScore.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
@@ -265,6 +290,30 @@ static const int margins = 20;
     
     _ads.delegate = nil;
     [_ads removeFromSuperview];
+    
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if (buttonIndex == 0){
+        
+        LeaderboardInfo *currentInfo = [[LeaderboardInfo alloc] init];
+        currentInfo.nameForBoard = [alertView textFieldAtIndex:0].text;
+        currentInfo.coinsForBoard = [NSNumber numberWithUnsignedInteger:coinsCollected];
+        
+        /*NSString *name = [alertView textFieldAtIndex:0].text;
+        NSNumber *coins = [NSNumber numberWithUnsignedInteger:coinsCollected];
+        
+        NSMutableArray *leaderboardInfo = [[NSMutableArray alloc] initWithObjects:name, coins, nil];*/
+        
+        [_savedLeaderboard addObject:currentInfo];
+        
+        NSData *leaderboardData = [NSKeyedArchiver archivedDataWithRootObject:_savedLeaderboard];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:leaderboardData forKey:@"leaderboard"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+    }
     
 }
 
