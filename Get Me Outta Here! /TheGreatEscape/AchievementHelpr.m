@@ -13,6 +13,8 @@ static NSString* const twentyFiveCoinsCollectedAchievementId = @"com.wwdstudios.
 static NSString* const fiftyCoinsCollectedAchievementId = @"com.wwdstudios.GetMeOuttaHere.collected50coins";
 static NSString* const oneHundredCoinsCollectedAchievementId = @"com.wwdstudios.GetMeOuttaHere.collected100coins";
 static NSString* const twoHundredFiftyCoinsCollectedAchievementId = @"com.wwdstudios.GetMeOuttaHere.collected250coins";
+static NSString* const coinMaster = @"com.wwdstudios.GetMeOuttaHere.coinmaster";
+static NSString* const touchedBee = @"com.wwdstudios.GetMeOuttaHere.touched";
 
 static const NSInteger maxCoins = 250;
 
@@ -48,6 +50,11 @@ static const NSInteger maxCoins = 250;
         achieveId = twoHundredFiftyCoinsCollectedAchievementId;
         percentComplete = 100;
         
+    } else if (coinCollected == 500){
+        
+        achieveId = coinMaster;
+        percentComplete = 100;
+        
     }
     
     GKAchievement *coinsAchievement= [[GKAchievement alloc] initWithIdentifier:achieveId];
@@ -55,6 +62,26 @@ static const NSInteger maxCoins = 250;
     coinsAchievement.percentComplete = percentComplete;
     coinsAchievement.showsCompletionBanner = YES;
     return coinsAchievement;
+    
+}
+
++(GKAchievement *)beeTouched:(BOOL)beeTouched{
+    
+    NSString *achieveId = @"";
+    CGFloat percentComplete = 100;
+    
+    if (beeTouched == YES){
+        
+        achieveId = touchedBee;
+        
+    }
+    
+    
+    GKAchievement *beeAchievement= [[GKAchievement alloc] initWithIdentifier:achieveId];
+    
+    beeAchievement.percentComplete = percentComplete;
+    beeAchievement.showsCompletionBanner = YES;
+    return beeAchievement;
     
 }
 

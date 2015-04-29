@@ -58,6 +58,7 @@
 @property (nonatomic) BOOL playing;
 @property (nonatomic) SKLabelNode *score;
 @property (nonatomic) NSUInteger coinsCollected;
+@property (nonatomic) BOOL wasBeeTouched;
 
 @end
 
@@ -71,7 +72,7 @@ static const uint32_t heartCategory = 0x1 <<4;
 //Obstacle Spawning Times
 static const float obstacleDelay = 1.0f;
 static const float obstacleUpdateMinTime = 1.0f;
-static const float obstableUpdateMaxTime = 2.0f;
+static const float obstableUpdateMaxTime = 1.5f;
 
 //Coin Spawning Times
 static const float coinDelay = 0.5f;
@@ -97,6 +98,7 @@ static NSString *fontName = @"GrutchShaded";
     [self setupSound];
     _playing = YES;
     _coinsCollected = 0;
+    _wasBeeTouched = NO;
     
     //Will more closely resemble the gravity of the moon to allow for funner gameplay.
     self.physicsWorld.gravity = CGVectorMake(0, -3.5);
@@ -453,13 +455,13 @@ static NSString *fontName = @"GrutchShaded";
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
         
-        float randomPhoneX = [self randomNumber:850 andValue:900];
+        float randomPhoneX = [self randomNumber:850 andValue:875];
         float randomPhoneY = [self randomNumber:100 andValue:130];
         _bee.position = CGPointMake(randomPhoneX, randomPhoneY);
         
         CGPoint location = CGPointMake(-self.frame.size.width + _bee.size.width/2, 100);
         
-        _beeMoving = [SKAction moveTo:location duration:6];
+        _beeMoving = [SKAction moveTo:location duration:4.5];
         [_bee runAction:_beeMoving withKey:@"moveBee"];
         
     }
@@ -729,6 +731,7 @@ static NSString *fontName = @"GrutchShaded";
     NSMutableArray *achieves = [NSMutableArray array];
     
     [achieves addObject:[AchievementHelpr coinsCollected:_coinsCollected]];
+    [achieves addObject:[AchievementHelpr beeTouched:_wasBeeTouched]];
     
     [[GameKitHelper sharedHelper] sendAchievements:achieves];
     
@@ -770,6 +773,8 @@ static NSString *fontName = @"GrutchShaded";
             
             [_heartThree removeFromParent];
             [self runAction:_deathSound];
+            _wasBeeTouched = YES;
+            [self reportAchievements];
             _heartThree = nil;
             
         }  else if (_heartThree == nil && _heartTwo != nil){

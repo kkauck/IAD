@@ -12,5 +12,6 @@
 @interface AchievementHelpr : NSObject
 
 +(GKAchievement *)coinsCollected:(NSUInteger)coinsCollected;
++(GKAchievement *)beeTouched:(BOOL)beeTouched;
 
 @end
